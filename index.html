@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لعبة تصويب الليزر</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #282c34;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        #gameArea {
+            position: relative;
+            width: 600px;
+            height: 600px;
+            background-color: #000;
+            border: 2px solid #fff;
+            overflow: hidden;
+            cursor: crosshair;
+        }
+
+        .target {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-color: red;
+            border-radius: 50%;
+            animation: moveTarget 3s infinite;
+        }
+
+        #scoreBoard {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #000;
+            color: #fff;
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 20px;
+        }
+
+        @keyframes moveTarget {
+            0% { top: 0; left: 0; }
+            25% { top: 0; left: 100%; }
+            50% { top: 100%; left: 100%; }
+            75% { top: 100%; left: 0; }
+            100% { top: 0; left: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div id="gameArea">
+        <div class="target" id="target1"></div>
+        <div class="target" id="target2" style="animation-duration: 2.5s;"></div>
+        <div class="target" id="target3" style="animation-duration: 2s;"></div>
+        <div id="scoreBoard">النقاط: <span id="score">0</span></div>
+    </div>
+
+    <script>
+        const targets = document.querySelectorAll('.target');
+        const scoreBoard = document.getElementById('score');
+        let score = 0;
+
+        targets.forEach(target => {
+            target.addEventListener('click', function() {
+                score += 10;
+                scoreBoard.textContent = score;
+                // حرك الهدف إلى موقع عشوائي جديد
+                moveTarget(target);
+            });
+        });
+
+        function moveTarget(target) {
+            const gameArea = document.getElementById('gameArea');
+            const gameAreaRect = gameArea.getBoundingClientRect();
+            const targetSize = 50;
+            const maxX = gameAreaRect.width - targetSize;
+            const maxY = gameAreaRect.height - targetSize;
+
+            const newX = Math.random() * maxX;
+            const newY = Math.random() * maxY;
+
+            target.style.left = `${newX}px`;
+            target.style.top = `${newY}px`;
+        }
+    </script>
+</body>
+</html>
